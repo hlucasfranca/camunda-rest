@@ -83,7 +83,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"variables\": {\n        \"amount\": {\n            \"value\": 555,\n            \"type\": \"long\"\n        },\n        \"item\": {\n            \"value\": \"item-xyz\"\n        }\n    }\n}"
+					"raw": "{\n    \"variables\": {\n        \"amount\": {\n            \"value\": 1,\n            \"type\": \"long\"\n        },\n        \"item\": {\n            \"value\": \"item-xyz\"\n        }\n    }\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/rest/engine/default/process-definition/{{process-definition-id}}/start",
