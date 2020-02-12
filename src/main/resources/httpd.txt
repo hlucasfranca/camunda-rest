@@ -1,0 +1,13 @@
+LoadModule proxy_http_module modules/mod_proxy_http.so
+
+ProxyPass /app/ http://localhost:8080/app/
+ProxyPassReverse /app/ http://localhost:8080/app/
+
+ProxyPass /api/ http://localhost:8080/api/
+ProxyPassReverse /api/ http://localhost:8080/api/
+
+ProxyPass /lib/ http://localhost:8080/lib/
+ProxyPassReverse /lib/ http://localhost:8080/lib/
+
+ProxyPass / http://localhost:8080/
+ProxyPassReverse / http://localhost:8080/
