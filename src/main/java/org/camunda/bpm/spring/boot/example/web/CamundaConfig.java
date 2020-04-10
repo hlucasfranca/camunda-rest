@@ -14,6 +14,7 @@ public class CamundaConfig implements ProcessEnginePlugin {
     @Override
     public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
         processEngineConfiguration.setJavaSerializationFormatEnabled(true);
+
     }
 
     @Override

@@ -6,6 +6,56 @@
 	},
 	"item": [
 		{
+			"name": "fetchAndLock",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "802f556e-b1fc-42a0-9e85-92af55186bba",
+						"exec": [
+							"pm.test(\"Deve retornar id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0]).to.have.property('id');",
+							"    pm.globals.set(\"process-definition-id\", jsonData[0].id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/engine/default/process-definition",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"engine",
+						"default",
+						"process-definition"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "1 - http://localhost:8080/rest/engine/default/process-definition",
 			"event": [
 				{
@@ -56,7 +106,7 @@
 			"response": []
 		},
 		{
-			"name": "2 - http://localhost:8080/rest/engine/default/process-definition/{{process-definition-id}}/start",
+			"name": "2 - start process",
 			"event": [
 				{
 					"listen": "test",
@@ -83,7 +133,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"variables\": {\n        \"amount\": {\n            \"value\": 1,\n            \"type\": \"long\"\n        },\n        \"item\": {\n            \"value\": \"item-xyz\"\n        }\n    }\n}"
+					"raw": "{\n    \"variables\": {\n        \"amount\": {\n            \"value\": 1,\n            \"type\": \"long\"\n        },\n        \"item\": {\n            \"value\": [{\"nome\":\"item-xyz\"}]\n        },\n        \"itemA\": {\n            \"value\": {\"nome\":\"item-xyz\"}\n        }\n    }\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/rest/engine/default/process-definition/{{process-definition-id}}/start",
@@ -105,7 +155,7 @@
 			"response": []
 		},
 		{
-			"name": "3 - http://localhost:8080/rest/engine/default/process-instance/{{process-definition-id}}",
+			"name": "3 - get tasks",
 			"event": [
 				{
 					"listen": "test",
@@ -149,7 +199,7 @@
 			"response": []
 		},
 		{
-			"name": "4 - http://localhost:8080/rest/engine/default/task/a9506e4e-45e1-11ea-b688-503eaa214820/complete",
+			"name": "4 - complete",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -162,7 +212,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"variables\": {\n        \"amount\": {\n            \"value\": 123\n        },\n        \"item\": {\n            \"value\": \"hlf\"\n        }\n    }\n}",
+					"raw": "{\n    \"variables\": {\n        \"amount\": {\n            \"value\": 1\n        },\n        \"item\": {\n            \"value\": \"hlf\"\n        },\n        \"retorno\": {\n            \"value\": \"retentar 1\"\n        }\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -183,6 +233,49 @@
 						"task",
 						"{{taskId}}",
 						"complete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "history",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"variables\": {\n        \"amount\": {\n            \"value\": 123\n        },\n        \"item\": {\n            \"value\": \"hlf\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/engine/default/history/process-instance/{{processId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"engine",
+						"default",
+						"history",
+						"process-instance",
+						"{{processId}}"
 					]
 				}
 			},
