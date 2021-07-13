@@ -6,12 +6,11 @@
 	},
 	"item": [
 		{
-			"name": "fetchAndLock",
+			"name": "1 - Listar BPMNs -  /rest/engine/default/process-definition",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "802f556e-b1fc-42a0-9e85-92af55186bba",
 						"exec": [
 							"pm.test(\"Deve retornar id\", function () {",
 							"    var jsonData = pm.response.json();",
@@ -39,79 +38,34 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/rest/engine/default/process-definition",
+					"raw": "http://localhost:10200/rest/engine/default/process-definition?key=Sample",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "10200",
 					"path": [
 						"rest",
 						"engine",
 						"default",
 						"process-definition"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "Sample"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "1 - http://localhost:8080/rest/engine/default/process-definition",
+			"name": "2 - Iniciar processo - /rest/engine/default/process-definition/id/start",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "802f556e-b1fc-42a0-9e85-92af55186bba",
-						"exec": [
-							"pm.test(\"Deve retornar id\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData[0]).to.have.property('id');",
-							"    pm.globals.set(\"process-definition-id\", jsonData[0].id);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "http://localhost:8080/rest/engine/default/process-definition",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"rest",
-						"engine",
-						"default",
-						"process-definition"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "2 - start process",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "cf3c9780-e969-4c19-9d46-ec1e71d9228a",
 						"exec": [
 							"pm.test(\"Deve retornar id\", function () {",
 							"    var jsonData = pm.response.json();",
@@ -133,15 +87,15 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"variables\": {\n        \"amount\": {\n            \"value\": 1,\n            \"type\": \"long\"\n        },\n        \"item\": {\n            \"value\": [{\"nome\":\"item-xyz\"}]\n        },\n        \"itemA\": {\n            \"value\": {\"nome\":\"item-xyz\"}\n        }\n    }\n}"
+					"raw": "{\n    \"variables\": {\n        \n       \n    }\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/rest/engine/default/process-definition/{{process-definition-id}}/start",
+					"raw": "http://localhost:10200/rest/engine/default/process-definition/{{process-definition-id}}/start",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "10200",
 					"path": [
 						"rest",
 						"engine",
@@ -155,12 +109,11 @@
 			"response": []
 		},
 		{
-			"name": "3 - get tasks",
+			"name": "3 - Listar Tarefas - /rest/engine/default/task",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "d206cc63-d4e5-4d60-b2e7-57f38f86678b",
 						"exec": [
 							"pm.test(\"Deve retornar id\", function () {",
 							"    var jsonData = pm.response.json();",
@@ -176,12 +129,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/rest/engine/default/task?processInstanceId={{processId}}",
+					"raw": "http://localhost:10200/rest/engine/default/task?processInstanceId={{processId}}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "10200",
 					"path": [
 						"rest",
 						"engine",
@@ -199,7 +152,46 @@
 			"response": []
 		},
 		{
-			"name": "4 - complete",
+			"name": "3 - Tarefa - Listar Entradas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0]).to.have.property('id');",
+							"    pm.globals.set(\"taskId\", jsonData[0].id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:10200/rest/engine/default/task/{{taskId}}/form-variables",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "10200",
+					"path": [
+						"rest",
+						"engine",
+						"default",
+						"task",
+						"{{taskId}}",
+						"form-variables"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4 - Completar Tarefa - /rest/engine/default/task/id/complete",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -212,7 +204,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"variables\": {\n        \"amount\": {\n            \"value\": 1\n        },\n        \"item\": {\n            \"value\": \"hlf\"\n        },\n        \"retorno\": {\n            \"value\": \"retentar 1\"\n        }\n    }\n}",
+					"raw": "{\n    \"variables\": {\n        \"nome\": {\n            \"value\": \"Fulano\"\n        },\n        \"cpf\": {\n            \"value\": \"22222222222\"\n        }\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -220,19 +212,157 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/rest/engine/default/task/{{taskId}}/complete",
+					"raw": "http://localhost:10200/rest/engine/default/task/{{taskId}}/submit-form",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "10200",
 					"path": [
 						"rest",
 						"engine",
 						"default",
 						"task",
 						"{{taskId}}",
+						"submit-form"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5 - external - fetchAndLock",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0]).to.have.property('id');",
+							"    pm.globals.set(\"externalTaskId\", jsonData[0].id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"workerId\": \"workerTeste\",\n\t\"maxTasks\": 10,\n\t\"topics\": [{\n\t\t\"topicName\": \"customerCreation\",\n\t\t\"lockDuration\": 60000\n\t}]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:10200/rest/engine/default/external-task/fetchAndLock",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "10200",
+					"path": [
+						"rest",
+						"engine",
+						"default",
+						"external-task",
+						"fetchAndLock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6 - external - complete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0]).to.have.property('id');",
+							"    pm.globals.set(\"process-definition-id\", jsonData[0].id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"workerId\": \"workerTeste\",\n\t\"variables\": {\n        \"processou\": {\n            \"value\": true\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:10200/rest/engine/default/external-task/{{externalTaskId}}/complete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "10200",
+					"path": [
+						"rest",
+						"engine",
+						"default",
+						"external-task",
+						"{{externalTaskId}}",
 						"complete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7 - Listar Tarefas - /rest/engine/default/task",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData[0]).to.have.property('id');",
+							"    pm.globals.set(\"taskId\", jsonData[0].id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:10200/rest/engine/default/task?processInstanceId={{processId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "10200",
+					"path": [
+						"rest",
+						"engine",
+						"default",
+						"task"
+					],
+					"query": [
+						{
+							"key": "processInstanceId",
+							"value": "{{processId}}"
+						}
 					]
 				}
 			},
@@ -280,7 +410,54 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Message",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Deve retornar id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"    pm.globals.set(\"processId\", jsonData.id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"variables\": {\n        \"amount\": {\n            \"value\": 1,\n            \"type\": \"long\"\n        },\n        \"item\": {\n            \"value\": [{\"nome\":\"item-xyz\"}]\n        }\n       \n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/engine/default/process-definition/{{process-definition-id}}/start",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"engine",
+						"default",
+						"process-definition",
+						"{{process-definition-id}}",
+						"start"
+					]
+				}
+			},
+			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
